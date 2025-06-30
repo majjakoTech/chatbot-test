@@ -1,4 +1,5 @@
 import os
+import json
 from fastapi import FastAPI
 from dotenv import load_dotenv
 from api.routes import router
@@ -32,4 +33,18 @@ async def serve_index():
         html_content = f.read()
     return HTMLResponse(content=html_content, status_code=200)
 
+@app.get("/logs", response_class=HTMLResponse)
+async def serve_logs():
+    with open("static/logs.html", "r", encoding="utf-8") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content, status_code=200)
+
+@router.get("/logs/json")
+async def get_logs_json():
+    try:
+        with open("static/logs/chatbot_logs.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {"logs": []}
+    
 app.include_router(router)

@@ -19,8 +19,3 @@ async def search(q:str=Query(...,description="Search Query"), city_id: Optional[
         return JSONResponse(content={"query": q, "response": response})
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
-
-    
-
-    
-   

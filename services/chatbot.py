@@ -11,6 +11,7 @@ from qdrant_client import QdrantClient
 from pydantic import BaseModel, Field
 from typing_extensions import Literal
 import os
+import json
 
 # Load environment variables from .env (ensure OPENAI_API_KEY is set)
 load_dotenv()
@@ -128,4 +129,26 @@ def get_results(query: str, include_greeting: bool = False):
     result = graph_builder.invoke({
         "messages": [HumanMessage(content=query)],
     })
+    log_file = "static/logs/chatbot_logs.json"
+
+    log_entry = {
+    "query": query,
+    "response": result["messages"][-1].content
+}
+      # Create a log entry
+    if os.path.exists(log_file):
+        with open(log_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            if "logs" not in data:
+                data["logs"] = []
+    else:
+        data = {"logs": []}
+
+    # Append new entry
+    data["logs"].append(log_entry)
+
+    # Write back to file
+    with open(log_file, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
     return result["messages"][-1].content
