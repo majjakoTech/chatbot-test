@@ -14,7 +14,7 @@ services:
       dockerfile: Dockerfile
     container_name: hugging-cat-app
     volumes:
-      -./static/logs/chatbot_logs.json:/app/static/logs/chatbot_logs.json
+      - ./static/logs/chatbot_logs.json:/app/static/logs/chatbot_logs.json
     ports:
       - "7000:7000"
     depends_on:
