@@ -39,7 +39,7 @@ retriever = vector_store.as_retriever(
 )
 
 # Initialize OpenAI LLM
-llm = ChatOpenAI(model="gpt-4", temperature=0.3)  # Slightly higher temperature for more natural responses
+llm = ChatOpenAI(model="gpt-4o", temperature=0.3)  # Slightly higher temperature for more natural responses
 
 # Create empathetic prompt template
 empathetic_prompt = PromptTemplate(
