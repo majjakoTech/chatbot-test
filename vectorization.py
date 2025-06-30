@@ -22,7 +22,7 @@ with open("documents/document.json","r") as file:
         vector=embeddings.embed_query(vector_text)
         payload={
             "chunk_index":count,
-            "content":point["content"],
+            "page_content": point["content"],
             "metadata":{
                 **point["metadata"],
                 "preview":point["content"][:3000]
