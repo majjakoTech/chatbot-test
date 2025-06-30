@@ -438,7 +438,8 @@
         // Handle Enter key in input
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                form.dispatchEvent(new Event('submit'));
+                e.preventDefault(); // stops default form submission
+                form.requestSubmit(); // preferred way to trigger submit
             }
         });
     </script>
