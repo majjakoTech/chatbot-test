@@ -402,7 +402,7 @@
             `;
 
             try {
-                const response = await fetch(`http://127.0.0.1:6001/search?q=${encodeURIComponent(query)}`);
+                const response = await fetch(`http://127.0.0.1:6005/search?q=${encodeURIComponent(query)}`);
                 const data = await response.json();
                 console.log("API Response:", data);
 

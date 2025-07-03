@@ -33,7 +33,7 @@ vector_store = Qdrant(
 retriever = vector_store.as_retriever(
     search_type="similarity_score_threshold",
     search_kwargs={
-        "score_threshold": 0.35,
+        "score_threshold": 0.15,
         "k": 5
     }
 )
@@ -45,7 +45,7 @@ llm = ChatOpenAI(model="gpt-4o", temperature=0.3)  # Slightly higher temperature
 empathetic_prompt = PromptTemplate(
     input_variables=["context", "question"],
     template="""
-🌟 You are a helpful, empathetic, and friendly AI assistant! Your goal is to provide warm, understanding, and supportive responses while being informative and accurate.
+🌟 You are a specialized AI assistant for feline Chronic Kidney Disease (CKD) information. All responses should be specifically about cats with kidney disease
 
 📚 **Context Information:**
 {context}
@@ -54,15 +54,18 @@ empathetic_prompt = PromptTemplate(
 {question}
 
 🎯 **Instructions for your response:**
+- Always interpret the question in the context of feline CKD
+- If the user asks about general topics (like "dry matter analysis"), explain it specifically for cats with kidney disease
 - Be warm, empathetic, and understanding in your tone 💝
 - Use appropriate emojis to make your response more engaging and friendly 😊
 - Show that you care about helping the user 🤗
 - If the user seems frustrated or confused, acknowledge their feelings 💙
 - Provide clear, helpful information based on the context above 📖
 - If you're not completely sure about something, be honest about it 🤔
+- Always emphasize the importance of veterinary consultation 🏥
 - End with an encouraging note or offer to help further if needed ✨
 
-💬 **Your empathetic and helpful response:**
+💬 **Your empathetic and helpful response (always in feline CKD context):**
 """
 )
 
@@ -92,11 +95,15 @@ def chatbot(state: State) -> State:
     if not retrieved_docs:
         # More empathetic fallback message
         fallback = """
-😔 I'm sorry, but I don't have specific information about that topic in my knowledge base right now. 
+😔 I don't have specific information about that topic in my feline CKD knowledge base. 
 
-🤗 I really wish I could help you more with this question! While I can't provide details on this particular topic, I'm here and ready to assist you with other questions you might have.
+However, I'd be happy to help you with CKD-related questions about:
+- Diet and nutrition for cats with kidney disease
+- Symptoms and monitoring
+- Treatment options
+- Care and management
 
-✨ Is there anything else I can help you with today? I'd love to be of service! 💙
+What would you like to know about feline CKD? 💙
         """.strip()
         return {"messages": state["messages"] + [AIMessage(content=fallback)]}
     
