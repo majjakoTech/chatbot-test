@@ -45,7 +45,7 @@ llm = ChatOpenAI(model="gpt-4o", temperature=0.3)  # Slightly higher temperature
 empathetic_prompt = PromptTemplate(
     input_variables=["context", "question"],
     template="""
-🌟 You are a specialized AI assistant for feline Chronic Kidney Disease (CKD) information. All responses should be specifically about cats with kidney disease
+🌟 You are a specialized AI assistant EXCLUSIVELY for feline Chronic Kidney Disease (CKD) information. You ONLY answer questions about cats with kidney disease.
 
 📚 **Context Information:**
 {context}
@@ -53,8 +53,13 @@ empathetic_prompt = PromptTemplate(
 ❓ **User's Question:**
 {question}
 
+🚨 **STRICT SCOPE LIMITATION:**
+- ONLY answer questions specifically related to feline CKD (Chronic Kidney Disease in cats)
+- If the question is about cats but NOT about kidney disease (e.g., cat breeds, general cat care, non-kidney health issues), you MUST respond that you don't have information on that topic
+- If the context provided doesn't contain relevant information about the specific CKD-related question asked, say you don't have information on that aspect of feline CKD
+- Always interpret questions in the context of feline CKD ONLY
+
 🎯 **CRITICAL FORMATTING INSTRUCTIONS:**
-- Always interpret the question in the context of feline CKD
 - Format your response using STRUCTURED SECTIONS with bullet points
 - Use ⸻ (em dash) to separate each section
 - Start each section with an emoji and descriptive header
@@ -89,7 +94,7 @@ Start with a brief overview sentence, then organize information into sections li
 • [Key takeaway 2]
 • [Encouraging closing statement]
 
-💬 **Your structured, empathetic response (always in feline CKD context):**
+💬 **Your structured response (ONLY if question is about feline CKD):**
 """
 )
 
@@ -117,17 +122,26 @@ def chatbot(state: State) -> State:
     retrieved_docs = retriever.invoke(query)
     
     if not retrieved_docs:
-        # More empathetic fallback message
+        # Structured fallback message for no relevant documents
         fallback = """
-😔 I don't have specific information about that topic in my feline CKD knowledge base. 
+I don't have specific information about that topic in my feline CKD knowledge base.
 
-However, I'd be happy to help you with CKD-related questions about:
-- Diet and nutrition for cats with kidney disease
-- Symptoms and monitoring
-- Treatment options
-- Care and management
-
-What would you like to know about feline CKD? 💙
+⸻
+😔 What I Specialize In:
+• I'm specifically designed to help with feline Chronic Kidney Disease (CKD) information
+• I can only provide information about cats with kidney disease
+• For general cat questions or other health topics, I'm not able to help
+⸻
+🩺 Topics I Can Help With:
+• Diet and nutrition for cats with kidney disease
+• CKD symptoms and monitoring
+• Treatment options and medications for feline CKD
+• Care and management of cats with kidney disease
+• Understanding test results related to kidney function
+⸻
+🐾 Let's Focus on CKD:
+• What would you like to know about feline Chronic Kidney Disease?
+• I'm here to help with any kidney-related concerns for your cat 💙
         """.strip()
         return {"messages": state["messages"] + [AIMessage(content=fallback)]}
     
@@ -135,13 +149,6 @@ What would you like to know about feline CKD? 💙
     response = qa_chain.invoke({"query": query})
     response_text = response["result"]
     docs = response.get("source_documents", [])
-    
-    # Optional logging
-    # print("Retrieved documents:")
-    # for i, doc in enumerate(docs):
-    #     print(f"\n--- Document {i+1} ---")
-    #     print(doc.page_content[:200] + "..." if len(doc.page_content) > 200 else doc.page_content)
-    #     print(doc.metadata)
     
     return {"messages": state["messages"] + [AIMessage(content=response_text)]}
 
