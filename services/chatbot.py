@@ -68,7 +68,7 @@ empathetic_prompt = PromptTemplate(
 - Always emphasize the importance of veterinary consultation 🏥
 - End with an encouraging note or offer to help further if needed ✨
 
-📝 **REQUIRED RESPONSE FORMAT:**
+📝 **REQUIRED RESPONSE FORMAT (ONLY if question is about feline CKD):**
 Start with a brief overview sentence, then organize information into sections like this:
 
 ⸻
