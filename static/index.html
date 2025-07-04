@@ -635,7 +635,7 @@
             showLoadingMessage();
 
             try {
-                const response = await fetch(`https://ask.huggingcat.app/search?q=${encodeURIComponent(query)}`);
+                const response = await fetch(`http://127.0.0.1:6003/search?q=${encodeURIComponent(query)}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
