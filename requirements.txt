@@ -16,4 +16,3 @@ uvicorn
 fastapi
 langchain-qdrant
 pydantic
-rank_bm25

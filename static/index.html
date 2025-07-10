@@ -595,9 +595,9 @@
 
             <!-- Bottom Navigation -->
             <nav class="bottom-nav">
-                <!-- <a href="/logs" class="nav-button">
-                    <span>📊</span> View Chat Logs
-                </a> -->
+                <a href="/multi-image-test" class="nav-button">
+                    <span>📄</span> Analyze Medical Reports
+                </a>
                 <a href="#" class="nav-button" onclick="showInfo()">
                     <span>ℹ️</span> About CKD
                 </a>
@@ -635,7 +635,7 @@
             showLoadingMessage();
 
             try {
-                const response = await fetch(`http://127.0.0.1:6003/search?q=${encodeURIComponent(query)}`);
+                const response = await fetch(`http://127.0.0.1:6001/search?q=${encodeURIComponent(query)}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
