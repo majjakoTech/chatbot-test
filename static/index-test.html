@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat CKD Assistant - Professional Feline Care Guidance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            /* Dark Theme Color System */
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #111111;
+            --bg-card: #1a1a1a;
+            --bg-input: #1f1f1f;
+            --bg-hover: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #666666;
+            --text-muted: #404040;
+            --accent-primary: #ff6b35;
+            --accent-secondary: #e55a2b;
+            --accent-tertiary: #cc4a24;
+            --success: #00ff88;
+            --error: #ff4757;
+            --warning: #ffa502;
+            --border-primary: #333333;
+            --border-secondary: #404040;
+            --border-accent: #ff6b35;
+            /* Typography */
+            --font-family: 'Tomato Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --space-3xl: 4rem;
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 20px rgba(255, 107, 53, 0.3);
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-full: 9999px;
+            /* Transitions */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        /* Animated Background */
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.05) 0%, transparent 50%), radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Compact Header */
+        
+        .header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+            padding: var(--space-lg) 0;
+            position: relative;
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--space-md);
+            box-shadow: var(--shadow-glow);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-normal);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            color: white;
+            z-index: 1;
+            position: relative;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-xs);
+            letter-spacing: -0.025em;
+        }
+        
+        .header .subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        /* Main Content */
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        /* Chat Interface */
+        
+        .chat-container {
+            background: var(--bg-card);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            border: 1px solid var(--border-primary);
+            margin-bottom: var(--space-2xl);
+            position: relative;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+            color: var(--text-primary);
+            padding: var(--space-lg);
+            text-align: center;
+            border-bottom: 1px solid var(--border-primary);
+            flex-shrink: 0;
+        }
+        
+        .chat-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
+            color: var(--accent-primary);
+        }
+        
+        .chat-header p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .chat-body {
+            padding: var(--space-xl);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Input Form */
+        
+        .input-form {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+            flex-shrink: 0;
+        }
+        
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: var(--space-lg) var(--space-xl);
+            font-size: 1rem;
+            border: 2px solid var(--border-primary);
+            border-radius: var(--radius-xl);
+            outline: none;
+            transition: all var(--transition-normal);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+        
+        .input-field:focus {
+            border-color: var(--accent-primary);
+            background: var(--bg-hover);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+        
+        .input-field::placeholder {
+            color: var(--text-tertiary);
+        }
+        
+        .submit-btn {
+            padding: var(--space-lg) var(--space-xl);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: var(--radius-xl);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+            min-width: 140px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+        
+        .submit-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .submit-btn.loading {
+            color: transparent;
+        }
+        
+        .submit-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* Response Area */
+        
+        .response-area {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            flex: 1;
+            border: 1px solid var(--border-primary);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 200px;
+        }
+        
+        .response-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+        
+        .response-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+            white-space: pre-wrap;
+        }
+        
+        .response-content.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+            font-weight: 500;
+        }
+        
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .loading-dots {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .loading-dots span {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            animation: pulse 1.4s ease-in-out infinite both;
+        }
+        
+        .loading-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+        
+        .loading-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+        
+        @keyframes pulse {
+            0%,
+            80%,
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .response-content.error {
+            color: var(--error);
+            background: rgba(255, 71, 87, 0.1);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--error);
+        }
+        
+        .response-content.success {
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--accent-primary);
+        }
+        /* Bottom Navigation */
+        
+        .bottom-nav {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: var(--space-xl);
+        }
+        
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-lg);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all var(--transition-normal);
+            border: 1px solid var(--border-primary);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .nav-button:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+        
+        .nav-button:active {
+            transform: translateY(0);
+        }
+        /* Footer */
+        
+        .footer {
+            text-align: center;
+            padding: var(--space-xl) 0;
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+            margin-top: auto;
+            border-top: 1px solid var(--border-primary);
+        }
+        
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--space-md);
+            }
+            .header {
+                margin-bottom: var(--space-2xl);
+                padding: var(--space-xl) 0;
+            }
+            .input-form {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+            .submit-btn {
+                width: 100%;
+            }
+            .bottom-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav-button {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .chat-body {
+                padding: var(--space-lg);
+            }
+            .chat-header {
+                padding: var(--space-lg);
+            }
+            .response-area {
+                padding: var(--space-lg);
+            }
+        }
+        /* Accessibility */
+        
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        /* Focus styles for keyboard navigation */
+        
+        .submit-btn:focus-visible,
+        .input-field:focus-visible,
+        .nav-button:focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
+        /* Custom scrollbar */
+        
+         ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+         ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+         ::-webkit-scrollbar-thumb {
+            background: var(--border-primary);
+            border-radius: var(--radius-full);
+        }
+        
+         ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🐱</span>
+            </div>
+            <h1>Cat CKD Assistant</h1>
+            <p class="subtitle">Professional guidance for feline chronic kidney disease management and care</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Chat Interface -->
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h2>Ask Your Question</h2>
+                    <p>Get expert advice on symptoms, treatment, diet, and care for cats with CKD</p>
+                </div>
+
+                <div class="chat-body">
+                    <form class="input-form" id="question-form">
+                        <div class="input-wrapper">
+                            <input type="text" class="input-field" id="question-input" placeholder="e.g., What are the early signs of CKD in cats? What diet is best for a cat with kidney disease?" required autocomplete="off">
+                        </div>
+                        <button type="submit" class="submit-btn" id="submit-button">
+                            Ask Question
+                        </button>
+                    </form>
+
+                    <div class="response-area">
+                        <div class="response-content" id="result">
+                            👋 Welcome! I'm here to help you with questions about chronic kidney disease in cats.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <nav class="bottom-nav">
+                <a href="/multi-image-test" class="nav-button">
+                    <span>📄</span> Analyze Medical Reports
+                </a>
+                <a href="#" class="nav-button" onclick="showInfo()">
+                    <span>ℹ️</span> About CKD
+                </a>
+            </nav>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <span>⚠️</span>
+                <span>This tool provides general information and should not replace professional veterinary advice. Always consult with your veterinarian for specific medical guidance.</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const form = document.getElementById('question-form');
+        const input = document.getElementById('question-input');
+        const result = document.getElementById('result');
+        const submitButton = document.getElementById('submit-button');
+
+        // Form submission handler
+        form.addEventListener('submit', async(e) => {
+            e.preventDefault();
+            const query = input.value.trim();
+
+            if (!query) {
+                showError('Please enter a question.');
+                return;
+            }
+
+            // Show loading state
+            setLoadingState(true);
+            showLoadingMessage();
+
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/search?q=${encodeURIComponent(query)}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("API Response:", data);
+
+                // Show success result
+                showResult(data.response || "I couldn't find a specific answer to your question. Please try rephrasing or ask about specific CKD topics like symptoms, diet, or treatment.");
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError("I'm having trouble connecting to get information right now. Please check your connection and try again.");
+            } finally {
+                setLoadingState(false);
+            }
+        });
+
+        // Loading state management
+        function setLoadingState(isLoading) {
+            submitButton.disabled = isLoading;
+            input.disabled = isLoading;
+
+            if (isLoading) {
+                submitButton.classList.add('loading');
+                submitButton.textContent = '';
+            } else {
+                submitButton.classList.remove('loading');
+                submitButton.textContent = 'Ask Question';
+            }
+        }
+
+        // Show loading message
+        function showLoadingMessage() {
+            result.className = 'response-content loading';
+            result.innerHTML = `
+                <div class="loading-indicator">
+                    <span>Searching for information</span>
+                    <div class="loading-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show result
+        function showResult(message) {
+            result.className = 'response-content success';
+            result.textContent = message;
+            input.value = '';
+            input.focus();
+        }
+
+        // Show error
+        function showError(message) {
+            result.className = 'response-content error';
+            result.textContent = message;
+        }
+
+        // Keyboard navigation
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                form.requestSubmit();
+            }
+        });
+
+        // Auto-focus input on page load
+        window.addEventListener('load', () => {
+            input.focus();
+        });
+
+        // Info function (placeholder)
+        function showInfo() {
+            alert('Chronic Kidney Disease (CKD) is a progressive condition that affects kidney function in cats. Early detection and proper management can significantly improve quality of life.');
+        }
+
+        // Add smooth scrolling for better UX
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+
+</html>

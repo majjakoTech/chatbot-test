@@ -1,724 +1,840 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat CKD Assistant - Professional Feline Care Guidance</title>
+    <title>Hugging Cat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Noto+Sans:wght@400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-         :root {
-            /* Dark Theme Color System */
-            --bg-primary: #000000;
-            --bg-secondary: #0a0a0a;
-            --bg-tertiary: #111111;
-            --bg-card: #1a1a1a;
-            --bg-input: #1f1f1f;
-            --bg-hover: #2a2a2a;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --text-tertiary: #666666;
-            --text-muted: #404040;
-            --accent-primary: #ff6b35;
-            --accent-secondary: #e55a2b;
-            --accent-tertiary: #cc4a24;
-            --success: #00ff88;
-            --error: #ff4757;
-            --warning: #ffa502;
-            --border-primary: #333333;
-            --border-secondary: #404040;
-            --border-accent: #ff6b35;
-            /* Typography */
-            --font-family: 'Tomato Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            /* Spacing */
-            --space-xs: 0.25rem;
-            --space-sm: 0.5rem;
-            --space-md: 1rem;
-            --space-lg: 1.5rem;
-            --space-xl: 2rem;
-            --space-2xl: 3rem;
-            --space-3xl: 4rem;
-            /* Shadows */
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
-            --shadow-glow: 0 0 20px rgba(255, 107, 53, 0.3);
-            /* Border Radius */
-            --radius-sm: 0.375rem;
-            --radius-md: 0.5rem;
-            --radius-lg: 0.75rem;
-            --radius-xl: 1rem;
-            --radius-2xl: 1.5rem;
-            --radius-full: 9999px;
-            /* Transitions */
-            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: var(--font-family);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #262624;
+            color: #f8f8f8;
         }
-        /* Animated Background */
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
+
+        .chat-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #262624;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .header-title {
+            font-family: 'Fraunces', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFC971;
+        }
+
+        .info-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #3d3d3d;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message-group {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .user-group {
+            justify-content: flex-end;
+        }
+
+        .user-group .message-bubbles {
+            align-items: flex-end;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            background-color: #30302E;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .avatar img {
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.05) 0%, transparent 50%), radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.03) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
+            object-fit: cover;
+            border-radius: 50%;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--space-lg);
-            min-height: 100vh;
+
+        .avatar svg,
+        .avatar img[src$=".svg"] {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .message-bubbles {
             display: flex;
             flex-direction: column;
-        }
-        /* Compact Header */
-        
-        .header {
-            text-align: center;
-            margin-bottom: var(--space-xl);
-            padding: var(--space-lg) 0;
-            position: relative;
-        }
-        
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: var(--radius-xl);
-            margin-bottom: var(--space-md);
-            box-shadow: var(--shadow-glow);
-            position: relative;
-            overflow: hidden;
-            transition: all var(--transition-normal);
-        }
-        
-        .logo:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-        
-        .logo::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
-            animation: shimmer 3s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% {
-                transform: translateX(-100%);
-            }
-            100% {
-                transform: translateX(100%);
-            }
-        }
-        
-        .logo-icon {
-            font-size: 2rem;
-            color: white;
-            z-index: 1;
-            position: relative;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-        }
-        
-        .header h1 {
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: var(--space-xs);
-            letter-spacing: -0.025em;
-        }
-        
-        .header .subtitle {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        /* Main Content */
-        
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 900px;
-            margin: 0 auto;
+            gap: 5px;
             width: 100%;
         }
-        /* Chat Interface */
         
-        .chat-container {
-            background: var(--bg-card);
-            border-radius: var(--radius-2xl);
-            box-shadow: var(--shadow-xl);
-            overflow: hidden;
-            width: 100%;
-            max-width: 900px;
-            border: 1px solid var(--border-primary);
-            margin-bottom: var(--space-2xl);
-            position: relative;
-            min-height: 600px;
-            display: flex;
-            flex-direction: column;
+        .message-bubble {
+            background-color: #30302E;
+            padding: 16px 20px;
+            margin: 6px 0;
+            border-radius: 40px;
+            font-size: 14px;
+            line-height: 1.5;
+            max-width: 85%;
+            word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s ease;
         }
-        
-        .chat-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+
+        .message-bubble:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-        
-        .chat-header {
-            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
-            color: var(--text-primary);
-            padding: var(--space-lg);
-            text-align: center;
-            border-bottom: 1px solid var(--border-primary);
-            flex-shrink: 0;
+
+        .user-message {
+            color: #FFC971;
+            font-weight: 500;
         }
-        
-        .chat-header h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: var(--space-xs);
-            color: var(--accent-primary);
+
+        .user-message p {
+            color: #FFC971;
         }
-        
-        .chat-header p {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        .chat-body {
-            padding: var(--space-xl);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        /* Input Form */
-        
-        .input-form {
-            display: flex;
-            gap: var(--space-md);
-            margin-bottom: var(--space-xl);
-            flex-shrink: 0;
-        }
-        
-        .input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-        
-        .input-field {
-            width: 100%;
-            padding: var(--space-lg) var(--space-xl);
-            font-size: 1rem;
-            border: 2px solid var(--border-primary);
-            border-radius: var(--radius-xl);
-            outline: none;
-            transition: all var(--transition-normal);
-            background: var(--bg-input);
-            color: var(--text-primary);
-            font-family: inherit;
-        }
-        
-        .input-field:focus {
-            border-color: var(--accent-primary);
-            background: var(--bg-hover);
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
-        }
-        
-        .input-field::placeholder {
-            color: var(--text-tertiary);
-        }
-        
-        .submit-btn {
-            padding: var(--space-lg) var(--space-xl);
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white;
-            border: none;
-            border-radius: var(--radius-xl);
+
+        .user-message strong {
+            color: #FFC971;
             font-weight: 600;
-            font-size: 1rem;
+        }
+
+        .message-bubble p {
+            margin: 8px 0;
+        }
+
+        .message-bubble p:first-child {
+            margin-top: 0;
+        }
+
+        .message-bubble p:last-child {
+            margin-bottom: 0;
+        }
+
+        .message-bubble strong {
+            color: #FFC971;
+            font-weight: 600;
+        }
+
+        .input-container {
+            padding: 15px 20px 20px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            border-top: 1px solid #3d3d3d;
+            background-color: #262624;
+        }
+
+        .add-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #30302E;
+            border: none;
+            color: white;
+            font-size: 24px;
+            font-weight: 300;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            transition: all var(--transition-normal);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             position: relative;
-            overflow: hidden;
-            min-width: 140px;
-            box-shadow: var(--shadow-md);
+            line-height: 1;
         }
-        
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg), var(--shadow-glow);
-        }
-        
-        .submit-btn:active:not(:disabled) {
-            transform: translateY(0);
-        }
-        
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .submit-btn.loading {
-            color: transparent;
-        }
-        
-        .submit-btn.loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
+
+        .add-button img {
             width: 20px;
             height: 20px;
-            margin: -10px 0 0 -10px;
-            border: 2px solid transparent;
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+            filter: brightness(0) invert(1);
+            transition: filter 0.3s ease;
         }
-        
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        /* Response Area */
-        
-        .response-area {
-            background: var(--bg-primary);
-            border-radius: var(--radius-xl);
-            padding: var(--space-xl);
-            flex: 1;
-            border: 1px solid var(--border-primary);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 200px;
-        }
-        
-        .response-area::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-        }
-        
-        .response-content {
-            font-size: 1rem;
-            line-height: 1.7;
-            color: var(--text-primary);
-            white-space: pre-wrap;
-        }
-        
-        .response-content.loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-primary);
-            font-weight: 500;
-        }
-        
-        .loading-indicator {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-        
-        .loading-dots {
-            display: flex;
-            gap: 6px;
-        }
-        
-        .loading-dots span {
-            width: 10px;
-            height: 10px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            animation: pulse 1.4s ease-in-out infinite both;
-        }
-        
-        .loading-dots span:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-        
-        .loading-dots span:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-        
-        @keyframes pulse {
-            0%,
-            80%,
-            100% {
-                transform: scale(0.8);
-                opacity: 0.5;
-            }
-            40% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        
-        .response-content.error {
-            color: var(--error);
-            background: rgba(255, 71, 87, 0.1);
-            padding: var(--space-lg);
-            border-radius: var(--radius-lg);
-            border-left: 4px solid var(--error);
-        }
-        
-        .response-content.success {
-            color: var(--text-primary);
-            background: var(--bg-primary);
-            padding: var(--space-lg);
-            border-radius: var(--radius-lg);
-            border-left: 4px solid var(--accent-primary);
-        }
-        /* Bottom Navigation */
-        
-        .bottom-nav {
-            display: flex;
-            gap: var(--space-md);
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: var(--space-xl);
-        }
-        
-        .nav-button {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding: var(--space-md) var(--space-lg);
-            background: var(--bg-card);
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: var(--radius-lg);
-            font-weight: 500;
-            font-size: 0.875rem;
-            transition: all var(--transition-normal);
-            border: 1px solid var(--border-primary);
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .nav-button:hover {
-            background: var(--bg-hover);
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-            box-shadow: var(--shadow-md);
+
+        .add-button:hover {
+            background-color: #FFC971;
+            color: #262624;
             transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
-        
-        .nav-button:active {
+
+        .add-button:hover img {
+            filter: brightness(0) invert(0);
+        }
+
+        .add-button:active {
             transform: translateY(0);
         }
-        /* Footer */
-        
-        .footer {
-            text-align: center;
-            padding: var(--space-xl) 0;
-            color: var(--text-tertiary);
-            font-size: 0.875rem;
-            margin-top: auto;
-            border-top: 1px solid var(--border-primary);
+
+        .add-button.has-images {
+            background-color: #FFC971;
+            color: #262624;
         }
-        
-        .footer-content {
+
+        .add-button.has-images img {
+            filter: brightness(0) invert(0);
+        }
+
+
+
+        .input-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            background-color: #30302E;
+            border-radius: 25px;
+            padding: 0 15px;
+        }
+
+        .message-input {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            color: #FFC971;
+            font-size: 13px;
+            padding: 15px 0;
+            outline: none;
+            font-weight: 500;
+        }
+
+        .message-input::placeholder {
+            color: #888888;
+            font-weight: 400;
+        }
+
+        .send-button-svg {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 8px;
+        }
+
+        .send-button-svg:hover {
+            transform: translateY(-1px) scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .send-button-svg:active {
+            transform: translateY(0) scale(1);
+        }
+
+
+
+        .image-preview-container {
+            padding: 15px 20px;
+            display: none;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-top: 1px solid #3d3d3d;
+            background-color: #2a2a28;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .image-preview {
+            position: relative;
+            display: inline-block;
+            background-color: #30302E;
+            border-radius: 12px;
+            padding: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-preview img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #FFC971;
+            transition: transform 0.2s ease;
+        }
+
+        .image-preview img:hover {
+            transform: scale(1.05);
+        }
+
+        .image-preview .remove-image {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #000000;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 14px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: var(--space-sm);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.2s ease;
         }
-        /* Responsive Design */
-        
+
+        .image-preview .remove-image:hover {
+            background-color: #333333;
+        }
+
+        .image-count-badge {
+            background-color: #FFC971;
+            color: #262624;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 16px;
+            text-align: center;
+        }
+
+        /* Mobile optimizations */
         @media (max-width: 768px) {
-            .container {
-                padding: var(--space-md);
+            .chat-container {
+                height: 100vh;
+                height: 100dvh; /* Dynamic viewport height for mobile */
             }
+
             .header {
-                margin-bottom: var(--space-2xl);
-                padding: var(--space-xl) 0;
+                padding: 15px 20px;
             }
-            .input-form {
-                flex-direction: column;
-                gap: var(--space-md);
+
+            .header-title {
+                font-size: 20px;
             }
-            .submit-btn {
-                width: 100%;
+
+            .chat-messages {
+                padding: 15px;
+                gap: 12px;
             }
-            .bottom-nav {
-                flex-direction: column;
-                align-items: center;
+
+            .message-bubble {
+                max-width: 90%;
+                font-size: 15px;
+                padding: 14px 18px;
             }
-            .nav-button {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
+
+            .input-container {
+                padding: 12px 15px 15px;
+                gap: 10px;
+            }
+
+            .add-button {
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+
+            .add-button img {
+                width: 18px;
+                height: 18px;
+            }
+
+            .input-wrapper {
+                padding: 0 12px;
+            }
+
+            .message-input {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 12px 0;
+                color: #FFC971;
+                font-weight: 500;
+            }
+
+            .send-button-svg {
+                width: 28px;
+                height: 28px;
+                margin-right: 6px;
+            }
+
+            .image-preview-container {
+                padding: 12px 15px;
+                gap: 10px;
+                max-height: 120px;
+            }
+
+            .image-preview img {
+                width: 75px;
+                height: 75px;
+            }
+
+            .image-preview .remove-image {
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
             }
         }
-        
-        @media (max-width: 480px) {
-            .chat-body {
-                padding: var(--space-lg);
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .add-button:hover,
+            .send-button-svg:hover,
+            .message-bubble:hover,
+            .image-preview img:hover,
+            .image-preview .remove-image:hover {
+                transform: none;
+                box-shadow: initial;
+                background-color: initial;
+                filter: none;
             }
-            .chat-header {
-                padding: var(--space-lg);
-            }
-            .response-area {
-                padding: var(--space-lg);
-            }
-        }
-        /* Accessibility */
-        
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+
+            .add-button:active,
+            .send-button-svg:active {
+                transform: scale(0.95);
             }
         }
-        /* Focus styles for keyboard navigation */
-        
-        .submit-btn:focus-visible,
-        .input-field:focus-visible,
-        .nav-button:focus-visible {
-            outline: 2px solid var(--accent-primary);
-            outline-offset: 2px;
-        }
-        /* Custom scrollbar */
-        
-         ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-         ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-        }
-        
-         ::-webkit-scrollbar-thumb {
-            background: var(--border-primary);
-            border-radius: var(--radius-full);
-        }
-        
-         ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-primary);
-        }
+
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <span class="logo-icon">🐱</span>
-            </div>
-            <h1>Cat CKD Assistant</h1>
-            <p class="subtitle">Professional guidance for feline chronic kidney disease management and care</p>
-        </header>
+    <div class="chat-container">
+        <div class="header">
+            <div class="header-title">Hugging Cat</div>
+            <div class="info-icon">i</div>
+        </div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Chat Interface -->
-            <div class="chat-container">
-                <div class="chat-header">
-                    <h2>Ask Your Question</h2>
-                    <p>Get expert advice on symptoms, treatment, diet, and care for cats with CKD</p>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message-group">
+                <div class="avatar">
+                    <img src="/static/logo.png" alt="Hugging Cat Logo">
                 </div>
-
-                <div class="chat-body">
-                    <form class="input-form" id="question-form">
-                        <div class="input-wrapper">
-                            <input type="text" class="input-field" id="question-input" placeholder="e.g., What are the early signs of CKD in cats? What diet is best for a cat with kidney disease?" required autocomplete="off">
-                        </div>
-                        <button type="submit" class="submit-btn" id="submit-button">
-                            Ask Question
-                        </button>
-                    </form>
-
-                    <div class="response-area">
-                        <div class="response-content" id="result">
-                            👋 Welcome! I'm here to help you with questions about chronic kidney disease in cats.
-                        </div>
-                    </div>
+                <div class="message-bubbles">
+                    <div class="message-bubble">Hello!</div>
+                    <div class="message-bubble">How can I help you and your kitty today?</div>
+                    <div class="message-bubble">I am here for your guidance.</div>
+                    <div class="message-bubble">Consult your vet for medical decisions.</div>
                 </div>
             </div>
+        </div>
 
-            <!-- Bottom Navigation -->
-            <nav class="bottom-nav">
-                <a href="/multi-image-test" class="nav-button">
-                    <span>📄</span> Analyze Medical Reports
-                </a>
-                <a href="#" class="nav-button" onclick="showInfo()">
-                    <span>ℹ️</span> About CKD
-                </a>
-            </nav>
-        </main>
+        <div class="image-preview-container" id="imagePreviewContainer">
+        </div>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-content">
-                <span>⚠️</span>
-                <span>This tool provides general information and should not replace professional veterinary advice. Always consult with your veterinarian for specific medical guidance.</span>
+        <div class="input-container">
+            <button class="add-button" id="imageButton" title="Add images">
+                <img src="/static/plus.svg" alt="Plus icon">
+            </button>
+            <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
+            <div class="input-wrapper">
+                <input type="text" class="message-input" placeholder="Ask anything about CKD" id="messageInput">
+                <img src="/static/up-arrow.svg" alt="Send message" id="sendButton" title="Send message" style="display: none; cursor: pointer;" class="send-button-svg">
             </div>
-        </footer>
+        </div>
     </div>
 
     <script>
-        // DOM Elements
-        const form = document.getElementById('question-form');
-        const input = document.getElementById('question-input');
-        const result = document.getElementById('result');
-        const submitButton = document.getElementById('submit-button');
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const imageButton = document.getElementById('imageButton');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        
+        let selectedImages = [];
+        let isStreaming = false;
+        let currentAbortController = null;
 
-        // Form submission handler
-        form.addEventListener('submit', async(e) => {
-            e.preventDefault();
-            const query = input.value.trim();
 
-            if (!query) {
-                showError('Please enter a question.');
-                return;
+
+        function addWelcomeMessages() {
+            const messageGroup = document.createElement('div');
+            messageGroup.className = 'message-group';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            const logoImg = document.createElement('img');
+            logoImg.src = '/static/logo.png';
+            logoImg.alt = 'Hugging Cat Logo';
+            avatar.appendChild(logoImg);
+            messageGroup.appendChild(avatar);
+
+            const messageBubbles = document.createElement('div');
+            messageBubbles.className = 'message-bubbles';
+            messageGroup.appendChild(messageBubbles);
+
+            const welcomeMessages = [
+                "Hello!",
+                "How can I help you and your kitty today?",
+                "I am here for your guidance.",
+                "Consult your vet for medical decisions."
+            ];
+
+            welcomeMessages.forEach(message => {
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                bubble.innerHTML = message;
+                messageBubbles.appendChild(bubble);
+            });
+
+            chatMessages.appendChild(messageGroup);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+
+
+        // Image button event listener
+        imageButton.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        // Image input change listener
+        imageInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    selectedImages.push(file);
+                    addImagePreview(file);
+                }
+            });
+            updateImagePreviewVisibility();
+        });
+
+        function addImagePreview(file) {
+            const previewDiv = document.createElement('div');
+            previewDiv.className = 'image-preview';
+
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-image';
+            removeBtn.innerHTML = '×';
+            removeBtn.onclick = () => {
+                selectedImages = selectedImages.filter(f => f !== file);
+                previewDiv.remove();
+                URL.revokeObjectURL(img.src);
+                updateImagePreviewVisibility();
+            };
+
+            previewDiv.appendChild(img);
+            previewDiv.appendChild(removeBtn);
+            imagePreviewContainer.appendChild(previewDiv);
+        }
+
+        function updateImagePreviewVisibility() {
+            imagePreviewContainer.style.display = selectedImages.length > 0 ? 'flex' : 'none';
+            
+            // Update the image button appearance
+            if (selectedImages.length > 0) {
+                imageButton.classList.add('has-images');
+                imageButton.title = `${selectedImages.length} image(s) selected`;
+            } else {
+                imageButton.classList.remove('has-images');
+                imageButton.title = 'Add images';
             }
+        }
 
-            // Show loading state
-            setLoadingState(true);
-            showLoadingMessage();
+        function clearImages() {
+            selectedImages = [];
+            imagePreviewContainer.innerHTML = '';
+            updateImagePreviewVisibility();
+            imageInput.value = '';
+        }
 
-            try {
-                const response = await fetch(`http://127.0.0.1:6001/search?q=${encodeURIComponent(query)}`);
+        function addMessage(text, isUser = false) {
+            let messageGroup = chatMessages.querySelector('.message-group:last-child');
 
+            if (isUser || !messageGroup) {
+                 messageGroup = document.createElement('div');
+                 messageGroup.className = isUser ? 'message-group user-group' : 'message-group';
+
+                // Only add avatar for bot messages
+                if (!isUser) {
+                    const avatar = document.createElement('div');
+                    avatar.className = 'avatar';
+                                const logoImg = document.createElement('img');
+            logoImg.src = '/static/logo.png';
+            logoImg.alt = 'Hugging Cat Logo';
+                    avatar.appendChild(logoImg);
+                    messageGroup.appendChild(avatar);
+                }
+
+                const messageBubbles = document.createElement('div');
+                messageBubbles.className = 'message-bubbles';
+                messageGroup.appendChild(messageBubbles)
+
+                chatMessages.appendChild(messageGroup);
+            }
+            
+            const messageBubbles = messageGroup.querySelector('.message-bubbles');
+
+            const bubble = document.createElement('div');
+            bubble.className = isUser ? 'message-bubble user-message' : 'message-bubble';
+            bubble.innerHTML = marked.parse(text);
+            
+            messageBubbles.appendChild(bubble);
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addUserMessageOnLeft(text) {
+            // Create a new message group for user message (displayed on left without avatar)
+            const messageGroup = document.createElement('div');
+            messageGroup.className = 'message-group';
+
+            const messageBubbles = document.createElement('div');
+            messageBubbles.className = 'message-bubbles';
+            messageBubbles.style.marginLeft = '58px'; // Add left margin to align with bot messages
+            messageGroup.appendChild(messageBubbles);
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble user-message';
+            bubble.innerHTML = marked.parse(text);
+            
+            messageBubbles.appendChild(bubble);
+            chatMessages.appendChild(messageGroup);
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addStreamingMessage() {
+            let messageGroup = chatMessages.querySelector('.message-group:last-child');
+            
+            // Create new message group for bot response
+            messageGroup = document.createElement('div');
+            messageGroup.className = 'message-group';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            const logoImg = document.createElement('img');
+            logoImg.src = '/static/logo.png';
+            logoImg.alt = 'Hugging Cat Logo';
+            avatar.appendChild(logoImg);
+            messageGroup.appendChild(avatar);
+
+            const messageBubbles = document.createElement('div');
+            messageBubbles.className = 'message-bubbles';
+            messageGroup.appendChild(messageBubbles);
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.innerHTML = '';
+            messageBubbles.appendChild(bubble);
+
+            chatMessages.appendChild(messageGroup);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            return bubble;
+        }
+
+        function updateStreamingMessage(bubble, text) {
+            bubble.innerHTML = marked.parse(text);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            
+            if (!text && selectedImages.length === 0) return;
+            
+            // Prevent multiple simultaneous requests
+            if (isStreaming) return;
+            
+            // Clear previous messages
+            chatMessages.innerHTML = '';
+            
+            // Show user message with image indicator if images are attached (on the left)
+            let displayText = text;
+            if (selectedImages.length > 0) {
+                displayText += ` [${selectedImages.length} image(s) attached]`;
+            }
+            addUserMessageOnLeft(displayText);
+            
+            // Clear input and images
+            messageInput.value = '';
+            const imagesToSend = [...selectedImages];
+            clearImages();
+
+            // Set streaming state
+            isStreaming = true;
+            updateSendButtonState();
+
+            // Create response message bubble
+            const responseBubble = addStreamingMessage();
+            updateStreamingMessage(responseBubble, '<div style="color: #FFC971; font-style: italic;">🤔 Thinking...</div>');
+
+            // Handle streaming response
+            let responseText = '';
+            
+            // Create AbortController for canceling the request
+            currentAbortController = new AbortController();
+            
+            // Create FormData for multipart/form-data submission
+            const formData = new FormData();
+            formData.append('message', text);
+            
+            // Add images to form data
+            imagesToSend.forEach((image, index) => {
+                formData.append('images', image);
+            });
+            
+            fetch('/chat', {
+                method: 'POST',
+                body: formData,
+                signal: currentAbortController.signal
+            })
+            .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                
+                function readStream() {
+                    return reader.read().then(({ done, value }) => {
+                        if (done) {
+                            // Streaming finished
+                            stopStreaming();
+                            return;
+                        }
+                        
+                        const chunk = decoder.decode(value, { stream: true });
+                        const lines = chunk.split('\n');
+                        
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const data = JSON.parse(line.slice(6));
+                                    
+                                    if (data.token) {
+                                        responseText += data.token;
+                                        updateStreamingMessage(responseBubble, responseText);
+                                    } else if (data.done) {
+                                        // Streaming finished
+                                        stopStreaming();
+                                        return;
+                                    }
+                                } catch (e) {
+                                    console.error('Error parsing chunk:', e);
+                                }
+                            }
+                        }
+                        
+                        return readStream();
+                    });
+                }
+                
+                return readStream();
+            })
+            .catch(error => {
+                stopStreaming();
+                if (error.name === 'AbortError') {
+                    updateStreamingMessage(responseBubble, responseText + '\n\n*[Stream stopped by user]*');
+                } else {
+                    console.error('Streaming error:', error);
+                    updateStreamingMessage(responseBubble, `Error: ${error.toString()}`);
+                }
+            });
+        }
 
-                const data = await response.json();
-                console.log("API Response:", data);
+        function stopStreaming() {
+            isStreaming = false;
+            currentAbortController = null;
+            updateSendButtonState();
+        }
 
-                // Show success result
-                showResult(data.response || "I couldn't find a specific answer to your question. Please try rephrasing or ask about specific CKD topics like symptoms, diet, or treatment.");
-
-            } catch (error) {
-                console.error('Error:', error);
-                showError("I'm having trouble connecting to get information right now. Please check your connection and try again.");
-            } finally {
-                setLoadingState(false);
-            }
-        });
-
-        // Loading state management
-        function setLoadingState(isLoading) {
-            submitButton.disabled = isLoading;
-            input.disabled = isLoading;
-
-            if (isLoading) {
-                submitButton.classList.add('loading');
-                submitButton.textContent = '';
+        function updateSendButtonState() {
+            if (isStreaming) {
+                sendButton.src = '/static/stop.svg';
+                sendButton.title = 'Stop streaming';
+                sendButton.style.display = 'block';
             } else {
-                submitButton.classList.remove('loading');
-                submitButton.textContent = 'Ask Question';
+                sendButton.src = '/static/up-arrow.svg';
+                sendButton.title = 'Send message';
+                sendButton.style.display = 'none';
             }
         }
 
-        // Show loading message
-        function showLoadingMessage() {
-            result.className = 'response-content loading';
-            result.innerHTML = `
-                <div class="loading-indicator">
-                    <span>Searching for information</span>
-                    <div class="loading-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
-            `;
-        }
+        // Show/hide send button based on input content
+        messageInput.addEventListener('input', function() {
+            const hasText = messageInput.value.trim().length > 0;
+            
+            if (!isStreaming) {
+                if (hasText) {
+                    sendButton.style.display = 'block';
+                } else {
+                    sendButton.style.display = 'none';
+                }
+            }
+            // During streaming, button visibility is controlled by updateSendButtonState()
+        });
 
-        // Show result
-        function showResult(message) {
-            result.className = 'response-content success';
-            result.textContent = message;
-            input.value = '';
-            input.focus();
-        }
-
-        // Show error
-        function showError(message) {
-            result.className = 'response-content error';
-            result.textContent = message;
-        }
-
-        // Keyboard navigation
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                form.requestSubmit();
+        // Send button click handler
+        sendButton.addEventListener('click', function() {
+            if (isStreaming) {
+                // Stop the current stream
+                if (currentAbortController) {
+                    currentAbortController.abort();
+                }
+            } else {
+                // Send message
+                sendMessage();
             }
         });
 
-        // Auto-focus input on page load
-        window.addEventListener('load', () => {
-            input.focus();
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (!isStreaming) {
+                    sendMessage();
+                }
+            }
         });
-
-        // Info function (placeholder)
-        function showInfo() {
-            alert('Chronic Kidney Disease (CKD) is a progressive condition that affects kidney function in cats. Early detection and proper management can significantly improve quality of life.');
-        }
-
-        // Add smooth scrolling for better UX
-        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     </script>
 </body>
-
 </html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hugging Cat - Model Tuning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Noto+Sans:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #262624;
+            color: #f8f8f8;
+        }
+
+        .tuning-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #262624;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            border-bottom: 1px solid #3d3d3d;
+        }
+
+        .header-title {
+            font-family: 'Fraunces', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFC971;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            background-color: #30302E;
+            color: #FFC971;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button:hover {
+            background-color: #FFC971;
+            color: #262624;
+            transform: translateY(-1px);
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .intro-section {
+            background-color: #30302E;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .intro-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFC971;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .intro-text {
+            color: #f8f8f8;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .parameters-form {
+            background-color: #30302E;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFC971;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .parameter-group {
+            margin-bottom: 25px;
+        }
+
+        .parameter-label {
+            display: block;
+            color: #FFC971;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .parameter-description {
+            color: #cccccc;
+            font-size: 12px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .parameter-input {
+            width: 100%;
+            background-color: #262624;
+            border: 2px solid #3d3d3d;
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: #f8f8f8;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .parameter-input:focus {
+            outline: none;
+            border-color: #FFC971;
+            box-shadow: 0 0 0 3px rgba(255, 201, 113, 0.1);
+        }
+
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .range-input {
+            flex: 1;
+            background: linear-gradient(to right, #FFC971 0%, #FFC971 50%, #3d3d3d 50%, #3d3d3d 100%);
+            height: 6px;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #FFC971;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .range-input::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .range-value {
+            background-color: #262624;
+            color: #FFC971;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            min-width: 60px;
+            text-align: center;
+            border: 1px solid #3d3d3d;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #FFC971;
+            color: #262624;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffb84d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 201, 113, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #3d3d3d;
+            color: #f8f8f8;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4a4a4a;
+            transform: translateY(-2px);
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .status-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status-success {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-error {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px 15px;
+            }
+
+            .intro-section,
+            .parameters-form {
+                padding: 20px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .back-button {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .range-container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .range-value {
+                align-self: center;
+                min-width: 80px;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .loading .btn-primary {
+            background-color: #cccccc;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading .btn-primary {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="tuning-container">
+        <div class="header">
+            <a href="/" class="back-button">
+                ← Back to Chat
+            </a>
+            <div class="header-title">Model Tuning</div>
+        </div>
+
+        <div class="content">
+            <div class="intro-section">
+                <div class="intro-title">
+                    ⚙️ GPT-4o Parameter Tuning
+                </div>
+                <div class="intro-text">
+                    Fine-tune the behavior of the GPT-4o model by adjusting these parameters. Each setting affects how the AI responds to your queries. Changes are saved automatically and will apply to future conversations.
+                </div>
+            </div>
+
+            <form class="parameters-form" id="parametersForm">
+                <div class="form-title">
+                    🎛️ Model Parameters
+                </div>
+
+                <div class="parameter-group">
+                    <label class="parameter-label" for="temperature">Temperature</label>
+                    <div class="parameter-description">Controls randomness. Lower values make output more focused and deterministic, higher values make it more creative.</div>
+                    <div class="range-container">
+                        <input type="range" id="temperature" name="temperature" min="0" max="2" step="0.1" value="0.9" class="range-input">
+                        <div class="range-value" id="temperatureValue">0.9</div>
+                    </div>
+                </div>
+
+                <div class="parameter-group">
+                    <label class="parameter-label" for="top_p">Top P</label>
+                    <div class="parameter-description">Controls diversity via nucleus sampling. 1.0 means no restrictions, lower values restrict token choices.</div>
+                    <div class="range-container">
+                        <input type="range" id="top_p" name="top_p" min="0" max="1" step="0.05" value="1.0" class="range-input">
+                        <div class="range-value" id="topPValue">1.0</div>
+                    </div>
+                </div>
+
+                <div class="parameter-group">
+                    <label class="parameter-label" for="frequency_penalty">Frequency Penalty</label>
+                    <div class="parameter-description">Reduces repetition of frequent tokens. Higher values decrease likelihood of repeating common phrases.</div>
+                    <div class="range-container">
+                        <input type="range" id="frequency_penalty" name="frequency_penalty" min="-2" max="2" step="0.1" value="0.3" class="range-input">
+                        <div class="range-value" id="frequencyPenaltyValue">0.3</div>
+                    </div>
+                </div>
+
+                <div class="parameter-group">
+                    <label class="parameter-label" for="presence_penalty">Presence Penalty</label>
+                    <div class="parameter-description">Encourages talking about new topics. Higher values increase likelihood of introducing new subjects.</div>
+                    <div class="range-container">
+                        <input type="range" id="presence_penalty" name="presence_penalty" min="-2" max="2" step="0.1" value="0.3" class="range-input">
+                        <div class="range-value" id="presencePenaltyValue">0.3</div>
+                    </div>
+                </div>
+
+                <div class="parameter-group">
+                    <label class="parameter-label" for="max_tokens">Max Tokens</label>
+                    <div class="parameter-description">Maximum number of tokens in the response. Higher values allow longer responses.</div>
+                    <div class="range-container">
+                        <input type="range" id="max_tokens" name="max_tokens" min="100" max="8000" step="100" value="4000" class="range-input">
+                        <div class="range-value" id="maxTokensValue">4000</div>
+                    </div>
+                </div>
+
+                <div class="parameter-group">
+                    <label class="parameter-label" for="stop">Stop Sequences (Optional)</label>
+                    <div class="parameter-description">Custom stop sequences to make the model stop generating. Enter comma-separated values or leave empty.</div>
+                    <input type="text" id="stop" name="stop" class="parameter-input" placeholder="Enter stop sequences separated by commas">
+                </div>
+
+                <div class="parameter-group">
+                    <label class="parameter-label" for="logit_bias">Logit Bias (JSON)</label>
+                    <div class="parameter-description">Boost or suppress specific tokens. Enter as JSON object (e.g., {"50256": -100}) or leave empty.</div>
+                    <textarea id="logit_bias" name="logit_bias" class="parameter-input" rows="3" placeholder='{"token_id": bias_value}'></textarea>
+                </div>
+
+                <div class="parameter-group">
+                    <label class="parameter-label" for="system_prompt">System Prompt</label>
+                    <div class="parameter-description">The system message that defines the AI's role and behavior. This sets the context for all conversations.</div>
+                    <textarea id="system_prompt" name="system_prompt" class="parameter-input" rows="10" placeholder="Enter the system prompt that defines the AI's role and behavior..."></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary" id="saveBtn">
+                        💾 Save Parameters
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="resetBtn">
+                        🔄 Reset to Defaults
+                    </button>
+                </div>
+
+                <div class="status-message" id="statusMessage"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Parameter controls
+        const temperatureSlider = document.getElementById('temperature');
+        const temperatureValue = document.getElementById('temperatureValue');
+        const topPSlider = document.getElementById('top_p');
+        const topPValue = document.getElementById('topPValue');
+        const frequencyPenaltySlider = document.getElementById('frequency_penalty');
+        const frequencyPenaltyValue = document.getElementById('frequencyPenaltyValue');
+        const presencePenaltySlider = document.getElementById('presence_penalty');
+        const presencePenaltyValue = document.getElementById('presencePenaltyValue');
+        const maxTokensSlider = document.getElementById('max_tokens');
+        const maxTokensValue = document.getElementById('maxTokensValue');
+        const stopInput = document.getElementById('stop');
+        const logitBiasInput = document.getElementById('logit_bias');
+        const systemPromptInput = document.getElementById('system_prompt');
+        
+        const form = document.getElementById('parametersForm');
+        const saveBtn = document.getElementById('saveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Update slider value displays
+        function updateSliderValue(slider, valueDisplay) {
+            slider.addEventListener('input', () => {
+                valueDisplay.textContent = slider.value;
+                updateSliderBackground(slider);
+            });
+        }
+
+        function updateSliderBackground(slider) {
+            const min = parseFloat(slider.min);
+            const max = parseFloat(slider.max);
+            const value = parseFloat(slider.value);
+            const percentage = ((value - min) / (max - min)) * 100;
+            
+            slider.style.background = `linear-gradient(to right, #FFC971 0%, #FFC971 ${percentage}%, #3d3d3d ${percentage}%, #3d3d3d 100%)`;
+        }
+
+        // Initialize slider updates
+        updateSliderValue(temperatureSlider, temperatureValue);
+        updateSliderValue(topPSlider, topPValue);
+        updateSliderValue(frequencyPenaltySlider, frequencyPenaltyValue);
+        updateSliderValue(presencePenaltySlider, presencePenaltyValue);
+        updateSliderValue(maxTokensSlider, maxTokensValue);
+
+        // Initialize slider backgrounds
+        [temperatureSlider, topPSlider, frequencyPenaltySlider, presencePenaltySlider, maxTokensSlider].forEach(updateSliderBackground);
+
+        // Load current parameters
+        async function loadParameters() {
+            try {
+                const response = await fetch('/tuning/parameters');
+                if (response.ok) {
+                    const params = await response.json();
+                    
+                    temperatureSlider.value = params.temperature || 0.9;
+                    temperatureValue.textContent = temperatureSlider.value;
+                    updateSliderBackground(temperatureSlider);
+                    
+                    topPSlider.value = params.top_p || 1.0;
+                    topPValue.textContent = topPSlider.value;
+                    updateSliderBackground(topPSlider);
+                    
+                    frequencyPenaltySlider.value = params.frequency_penalty || 0.3;
+                    frequencyPenaltyValue.textContent = frequencyPenaltySlider.value;
+                    updateSliderBackground(frequencyPenaltySlider);
+                    
+                    presencePenaltySlider.value = params.presence_penalty || 0.3;
+                    presencePenaltyValue.textContent = presencePenaltySlider.value;
+                    updateSliderBackground(presencePenaltySlider);
+                    
+                    maxTokensSlider.value = params.max_tokens || 4000;
+                    maxTokensValue.textContent = maxTokensSlider.value;
+                    updateSliderBackground(maxTokensSlider);
+                    
+                    // Handle stop sequences
+                    if (params.stop && Array.isArray(params.stop)) {
+                        stopInput.value = params.stop.join(', ');
+                    } else {
+                        stopInput.value = '';
+                    }
+                    
+                    // Handle logit bias
+                    if (params.logit_bias && Object.keys(params.logit_bias).length > 0) {
+                        logitBiasInput.value = JSON.stringify(params.logit_bias, null, 2);
+                    } else {
+                        logitBiasInput.value = '';
+                    }
+                    
+                    // Handle system prompt
+                    systemPromptInput.value = params.system_prompt || '';
+                }
+            } catch (error) {
+                showStatus('Error loading parameters', 'error');
+            }
+        }
+
+        // Save parameters
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('temperature', temperatureSlider.value);
+            formData.append('top_p', topPSlider.value);
+            formData.append('frequency_penalty', frequencyPenaltySlider.value);
+            formData.append('presence_penalty', presencePenaltySlider.value);
+            formData.append('max_tokens', maxTokensSlider.value);
+            
+            // Handle stop sequences
+            const stopSequences = stopInput.value.trim();
+            if (stopSequences) {
+                formData.append('stop', stopSequences);
+            } else {
+                formData.append('stop', '');
+            }
+            
+            // Handle logit bias
+            const logitBiasValue = logitBiasInput.value.trim();
+            if (logitBiasValue) {
+                formData.append('logit_bias', logitBiasValue);
+            } else {
+                formData.append('logit_bias', '{}');
+            }
+            
+            // Handle system prompt
+            formData.append('system_prompt', systemPromptInput.value);
+            
+            // Show loading state
+            form.classList.add('loading');
+            saveBtn.textContent = '💾 Saving...';
+            
+            try {
+                const response = await fetch('/tuning/parameters', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    showStatus('Parameters saved successfully!', 'success');
+                } else {
+                    const error = await response.json();
+                    showStatus(`Error: ${error.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus('Error saving parameters', 'error');
+            } finally {
+                // Remove loading state
+                form.classList.remove('loading');
+                saveBtn.textContent = '💾 Save Parameters';
+            }
+        });
+
+        // Reset to defaults
+        resetBtn.addEventListener('click', () => {
+            temperatureSlider.value = 0.9;
+            temperatureValue.textContent = '0.9';
+            updateSliderBackground(temperatureSlider);
+            
+            topPSlider.value = 1.0;
+            topPValue.textContent = '1.0';
+            updateSliderBackground(topPSlider);
+            
+            frequencyPenaltySlider.value = 0.3;
+            frequencyPenaltyValue.textContent = '0.3';
+            updateSliderBackground(frequencyPenaltySlider);
+            
+            presencePenaltySlider.value = 0.3;
+            presencePenaltyValue.textContent = '0.3';
+            updateSliderBackground(presencePenaltySlider);
+            
+            maxTokensSlider.value = 4000;
+            maxTokensValue.textContent = '4000';
+            updateSliderBackground(maxTokensSlider);
+            
+            stopInput.value = '';
+            logitBiasInput.value = '';
+            systemPromptInput.value = 'You are Hugging Cat, a helpful and compassionate veterinary assistant focused on feline chronic kidney disease (CKD). You provide expert information in a warm, structured, and supportive tone.\n\nYour role is to:\n1. Provide helpful, accurate information about feline CKD, symptoms, management, and care\n2. Offer emotional support to cat owners dealing with their pet\'s health challenges\n3. Share practical tips for caring for cats with kidney disease\n4. Explain medical concepts in an accessible, caring manner\n5. Emphasize the importance of veterinary consultation for all medical decisions\n6. Explain topics in great detail, including related aspects like symptoms, diagnosis, diet, supplements, treatment options, etc.\n7. Use tables when they can enhance clarity\n\n⸻\n\nWhen responding:\n- Format your response using clearly structured sections with bullet points\n- Start each section with an emoji and a descriptive header\n- Use • bullets under each section\n- Be warm, empathetic, and understanding 💝\n- Always remind users to consult their vet 🏥\n- End with an encouraging note or offer to help further ✨\n- Use Markdown formatting when helpful (e.g., bold, tables, headers, emojis)\n\n⸻\n\nScope Limitation:\n- Only focus on feline CKD. If the question is unrelated (e.g., other cat health issues, breeds), explain kindly that your focus is CKD.\n- If the provided context does not contain relevant CKD information, say so transparently\n\nYou should be informative but never provide medical diagnoses or treatment plans. Always encourage veterinary guidance.';
+            
+            showStatus('Parameters reset to defaults', 'success');
+        });
+
+        // Show status message
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message status-${type} show`;
+            
+            setTimeout(() => {
+                statusMessage.classList.remove('show');
+            }, 3000);
+        }
+
+        // Load parameters on page load
+        loadParameters();
+    </script>
+</body>
+</html> 
