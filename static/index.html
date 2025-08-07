@@ -72,14 +72,11 @@
             display: flex;
             gap: 10px;
             align-items: flex-start;
+            justify-content: flex-start;
         }
 
         .user-group {
-            justify-content: flex-end;
-        }
-
-        .user-group .message-bubbles {
-            align-items: flex-end;
+            /* All messages now aligned to right by default */
         }
 
         .avatar {
@@ -115,6 +112,7 @@
             flex-direction: column;
             gap: 4px;
             width: 100%;
+            align-items: flex-start;
         }
         
         .message-bubble {
@@ -127,8 +125,11 @@
             font-weight: 400;
             line-height: 1.362;
             letter-spacing: 0;
+            width: fit-content;
             max-width: 85%;
             word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             transition: all 0.2s ease;
         }
@@ -195,6 +196,10 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             position: relative;
             line-height: 1;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .add-button img {
@@ -217,9 +222,27 @@
 
         .add-button:active {
             transform: translateY(0);
+            background-color: #30302E;
+            color: white;
+        }
+
+        .add-button:focus {
+            outline: none;
+            background-color: #30302E;
+            color: white;
         }
 
         .add-button.has-images {
+            background-color: #FFC971;
+            color: #262624;
+        }
+
+        .add-button.has-images:active {
+            background-color: #FFC971;
+            color: #262624;
+        }
+
+        .add-button.has-images:focus {
             background-color: #FFC971;
             color: #262624;
         }
@@ -246,7 +269,7 @@
             color: #FFC971;
             font-family: 'Noto Sans', sans-serif;
             font-size: 13px;
-            padding: 15px 0;
+            padding: 15px 12px 15px 0;
             outline: none;
             font-weight: 500;
         }
@@ -261,7 +284,8 @@
             height: 32px;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-right: 8px;
+            margin: 0 8px 0 4px;
+            flex-shrink: 0;
         }
 
         .send-button-svg:hover {
@@ -367,9 +391,10 @@
             }
 
             .message-bubble {
+                width: fit-content;
                 max-width: 90%;
                 font-size: 15px;
-                padding: 16px 20px;
+                padding: 16px 24px;
                 margin: 0px 12px;
             }
 
@@ -395,7 +420,7 @@
 
             .message-input {
                 font-size: 16px; /* Prevents zoom on iOS */
-                padding: 12px 0;
+                padding: 12px 10px 12px 0;
                 color: #FFC971;
                 font-weight: 500;
             }
@@ -403,7 +428,7 @@
             .send-button-svg {
                 width: 28px;
                 height: 28px;
-                margin-right: 6px;
+                margin: 0 6px 0 4px;
             }
 
             .image-preview-container {
@@ -433,11 +458,34 @@
             .image-preview .remove-image:hover {
                 transform: none;
                 box-shadow: initial;
-                background-color: initial;
                 filter: none;
             }
 
-            .add-button:active,
+            /* Remove hover background reset for add-button to preserve its styling */
+            .add-button:hover {
+                background-color: #30302E;
+                color: white;
+            }
+
+            .add-button:active {
+                transform: scale(0.95);
+                background-color: #30302E !important;
+                color: white !important;
+            }
+
+            .add-button.has-images:active {
+                background-color: #FFC971 !important;
+                color: #262624 !important;
+            }
+
+            .add-button img {
+                filter: brightness(0) invert(1) !important;
+            }
+
+            .add-button.has-images img {
+                filter: brightness(0) invert(0) !important;
+            }
+
             .send-button-svg:active {
                 transform: scale(0.95);
             }
@@ -455,7 +503,7 @@
         <div class="chat-messages" id="chatMessages">
             <div class="message-group">
                 <div class="avatar" style="margin-top: 1%;">
-                    <img src="/static/logo.jpeg" alt="Hugging Cat Logo">
+                    <img src="/static/logo.png" alt="Hugging Cat Logo">
                 </div>
                 <div class="message-bubbles">
                     <div class="message-bubble">Hello!</div>
@@ -502,7 +550,7 @@
             // const avatar = document.createElement('div');
             // avatar.className = 'avatar';
             // const logoImg = document.createElement('img');
-            // logoImg.src = '/static/logo.jpeg';
+            // logoImg.src = '/static/logo.png';
             // logoImg.alt = 'Hugging Cat Logo';
             // avatar.appendChild(logoImg);
             // messageGroup.appendChild(avatar);
@@ -590,6 +638,8 @@
             imageInput.value = '';
         }
 
+        // No size classification needed - bubbles naturally size to content
+
         function addMessage(text, isUser = false) {
             let messageGroup = chatMessages.querySelector('.message-group:last-child');
 
@@ -633,7 +683,6 @@
 
             const messageBubbles = document.createElement('div');
             messageBubbles.className = 'message-bubbles';
-            messageBubbles.style.marginLeft = '58px'; // Add left margin to align with bot messages
             messageGroup.appendChild(messageBubbles);
 
             const bubble = document.createElement('div');
@@ -656,7 +705,7 @@
             // const avatar = document.createElement('div');
             // avatar.className = 'avatar';
             // const logoImg = document.createElement('img');
-            // logoImg.src = '/static/logo.jpeg';
+            // logoImg.src = '/static/logo.png';
             // logoImg.alt = 'Hugging Cat Logo';
             // avatar.appendChild(logoImg);
             // messageGroup.appendChild(avatar);
@@ -677,6 +726,7 @@
         }
 
         function updateStreamingMessage(bubble, text) {
+            // Update content - bubble automatically sizes to fit
             bubble.innerHTML = marked.parse(text);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
