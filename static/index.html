@@ -6,7 +6,7 @@
     <title>Hugging Cat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Noto+Sans:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         * {
@@ -113,17 +113,20 @@
         .message-bubbles {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
             width: 100%;
         }
         
         .message-bubble {
             background-color: #30302E;
-            padding: 16px 20px;
-            margin: 6px 0;
+            padding: 18px 24px;
+            margin: 8px 16px;
             border-radius: 40px;
+            font-family: 'Noto Sans', sans-serif;
             font-size: 14px;
-            line-height: 1.5;
+            font-weight: 400;
+            line-height: 1.362;
+            letter-spacing: 0;
             max-width: 85%;
             word-wrap: break-word;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -181,6 +184,7 @@
             background-color: #30302E;
             border: none;
             color: white;
+            font-family: 'Noto Sans', sans-serif;
             font-size: 24px;
             font-weight: 300;
             display: flex;
@@ -240,6 +244,7 @@
             background: transparent;
             border: none;
             color: #FFC971;
+            font-family: 'Noto Sans', sans-serif;
             font-size: 13px;
             padding: 15px 0;
             outline: none;
@@ -358,13 +363,14 @@
 
             .chat-messages {
                 padding: 15px;
-                gap: 12px;
+                gap: 5px;
             }
 
             .message-bubble {
                 max-width: 90%;
                 font-size: 15px;
-                padding: 14px 18px;
+                padding: 16px 20px;
+                margin: 0px 12px;
             }
 
             .input-container {
@@ -448,8 +454,8 @@
 
         <div class="chat-messages" id="chatMessages">
             <div class="message-group">
-                <div class="avatar">
-                    <img src="/static/logo.png" alt="Hugging Cat Logo">
+                <div class="avatar" style="margin-top: 1%;">
+                    <img src="/static/logo.jpeg" alt="Hugging Cat Logo">
                 </div>
                 <div class="message-bubbles">
                     <div class="message-bubble">Hello!</div>
@@ -493,13 +499,13 @@
             const messageGroup = document.createElement('div');
             messageGroup.className = 'message-group';
 
-            const avatar = document.createElement('div');
-            avatar.className = 'avatar';
-            const logoImg = document.createElement('img');
-            logoImg.src = '/static/logo.png';
-            logoImg.alt = 'Hugging Cat Logo';
-            avatar.appendChild(logoImg);
-            messageGroup.appendChild(avatar);
+            // const avatar = document.createElement('div');
+            // avatar.className = 'avatar';
+            // const logoImg = document.createElement('img');
+            // logoImg.src = '/static/logo.jpeg';
+            // logoImg.alt = 'Hugging Cat Logo';
+            // avatar.appendChild(logoImg);
+            // messageGroup.appendChild(avatar);
 
             const messageBubbles = document.createElement('div');
             messageBubbles.className = 'message-bubbles';
@@ -593,11 +599,11 @@
 
                 // Only add avatar for bot messages
                 if (!isUser) {
-                    const avatar = document.createElement('div');
-                    avatar.className = 'avatar';
-                                const logoImg = document.createElement('img');
-            logoImg.src = '/static/logo.png';
-            logoImg.alt = 'Hugging Cat Logo';
+                    // const avatar = document.createElement('div');
+                    // avatar.className = 'avatar';
+                    //             const logoImg = document.createElement('img');
+            // logoImg.src = '/static/logo.png';
+            // logoImg.alt = 'Hugging Cat Logo';   
                     avatar.appendChild(logoImg);
                     messageGroup.appendChild(avatar);
                 }
@@ -647,13 +653,13 @@
             messageGroup = document.createElement('div');
             messageGroup.className = 'message-group';
 
-            const avatar = document.createElement('div');
-            avatar.className = 'avatar';
-            const logoImg = document.createElement('img');
-            logoImg.src = '/static/logo.png';
-            logoImg.alt = 'Hugging Cat Logo';
-            avatar.appendChild(logoImg);
-            messageGroup.appendChild(avatar);
+            // const avatar = document.createElement('div');
+            // avatar.className = 'avatar';
+            // const logoImg = document.createElement('img');
+            // logoImg.src = '/static/logo.jpeg';
+            // logoImg.alt = 'Hugging Cat Logo';
+            // avatar.appendChild(logoImg);
+            // messageGroup.appendChild(avatar);
 
             const messageBubbles = document.createElement('div');
             messageBubbles.className = 'message-bubbles';
