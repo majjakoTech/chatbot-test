@@ -1,11 +1,11 @@
 version: "3.9"
 
 services:
-  hugging-cat-app-test:
+  chatbot-test:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: hugging-cat-app
+    container_name: chatbot-test
     volumes:
       - ./static/logs/chatbot_logs.json:/app/static/logs/chatbot_logs.json
     ports:
