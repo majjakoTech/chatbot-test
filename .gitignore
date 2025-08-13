@@ -1,4 +1,2 @@
 .env
-static/logs/chatbot_logs.json
-documents/tuning.json
 .venv
