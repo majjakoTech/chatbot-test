@@ -24,14 +24,6 @@ os.makedirs("static/logs", exist_ok=True)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/test", response_class=HTMLResponse)
-async def serve_index():
-    try:
-        with open("static/index-test.html", "r", encoding="utf-8") as f:
-            html_content = f.read()
-        return HTMLResponse(content=html_content, status_code=200)
-    except FileNotFoundError:
-        return HTMLResponse(content="<h1>Index file not found</h1>", status_code=404)
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_index():

@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hugging Cat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -694,20 +693,20 @@
 <body>
     <div class="chat-container">
         <div class="header">
-            <div class="header-title">Hugging Cat</div>
+            <!-- <div class="header-title">Hugging Cat</div> -->
             <div class="info-icon">i</div>
         </div>
 
         <div class="chat-messages" id="chatMessages">
             <div class="message-group">
-                <div class="avatar" style="margin-top: 1%;">
+                <!-- <div class="avatar" style="margin-top: 1%;">
                     <img src="/static/logo.png" alt="Hugging Cat Logo">
-                </div>
+                </div> -->
                 <div class="message-bubbles">
-                    <div class="message-bubble">Hello!</div>
+                    <!-- <div class="message-bubble">Hello!</div>
                     <div class="message-bubble">How can I help you and your kitty today?</div>
                     <div class="message-bubble">I am here for your guidance.</div>
-                    <div class="message-bubble">Consult your vet for medical decisions.</div>
+                    <div class="message-bubble">Consult your vet for medical decisions.</div> -->
                 </div>
             </div>
         </div>
@@ -721,7 +720,7 @@
             </button>
             <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
             <div class="input-wrapper">
-                <input type="text" class="message-input" placeholder="Ask anything about CKD" id="messageInput">
+                <input type="text" class="message-input" placeholder="Ask about a topic" id="messageInput">
                 <img src="/static/up-arrow.svg" alt="Send message" id="sendButton" title="Send message" style="display: none; cursor: pointer;" class="send-button-svg">
             </div>
         </div>
@@ -758,10 +757,10 @@
             messageGroup.appendChild(messageBubbles);
 
             const welcomeMessages = [
-                "Hello!",
-                "How can I help you and your kitty today?",
-                "I am here for your guidance.",
-                "Consult your vet for medical decisions."
+                // "Hello!",
+                // "How can I help you and your kitty today?",
+                // "I am here for your guidance.",
+                // "Consult your vet for medical decisions."
             ];
 
             welcomeMessages.forEach(message => {
